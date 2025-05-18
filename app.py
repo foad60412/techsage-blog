@@ -375,6 +375,11 @@ def generate_article_api():
         return jsonify({"success": True, "title": title, "content": content})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
+    
+@app.route('/sw.js')
+def service_worker():
+    return app.send_static_file('sw.js')
+
 if __name__ == '__main__':
     os.makedirs('database', exist_ok=True)
     with app.app_context():
