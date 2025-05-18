@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Visitor Analytics | TechSage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    html, body {
+      background: #111 !important;
+      color: #fff !important;
+    }
+    :root, [data-theme="dark"], [data-theme="light"] {
+      --main-bg: #111 !important;
+      --main-text: #fff !important;
+      --accent: #ffd700;
+      --card-bg: #181818 !important;
+    }
+    .navbar, .navbar * {
+      background: #181818 !important;
+      color: #ffd700 !important;
+      font-size: 1.08rem;
+      font-weight: 700;
+      border: none;
+    }
+    .navbar .nav-link {
+      color: #ffd700 !important;
+      text-decoration: none;
+      padding: 6px 13px;
+      border-radius: 8px;
+      transition: background .14s, color .14s;
+    }
+    .navbar .nav-link.active, .navbar .nav-link:hover, .navbar-brand:hover {
+      background: #ffd700 !important;
+      color: #181818 !important;
+    }
+    .navbar-brand {
+      color: #ffd700 !important;
+      font-size: 1.2rem;
+      letter-spacing: .7px;
+    }
+    .title {
+      font-size: 2.05rem;
+      font-weight: 900;
+      color: var(--accent);
+      text-align: center;
+      margin: 27px 0 16px 0;
+      text-shadow: 0 4px 16px #ffd70022;
+    }
+    .card-analytics {
+      background: var(--card-bg);
+      border-radius: 19px;
+      box-shadow: 0 2px 14px #ffd70013;
+      border: 1.5px solid var(--accent);
+      padding: 24px 18px 20px 18px;
+      max-width: 680px;
+      margin: 0 auto 40px auto;
+    }
+    .stats-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 17px;
+    }
+    .stats-title {
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0;
+      letter-spacing: .3px;
+    }
+    .stats-range-select {
+      font-size: 1rem;
+      padding: 5px 13px;
+      border-radius: 7px;
+      border: 1.5px solid var(--accent);
+      background: var(--main-bg);
+      color: var(--main-text);
+      font-weight: 600;
+      outline: none;
+      margin-left: 7px;
+    }
+    .summary-info {
+      font-size: 1.1rem;
+      color: #fff;
+      background: #ffd70019;
+      border-radius: 8px;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .summary-info .bi-bar-chart {
+      color: var(--accent);
+      font-size: 1.3rem;
+    }
+    @media (max-width: 600px) {
+      .card-analytics {padding: 14px 4px;}
+      .stats-title {font-size: 1.03rem;}
+      .title {font-size: 1.15rem;}
+    }
+    .back-btn {
+      margin: 0 0 18px 0;
+      font-size: 1.05rem;
+      color: #ffd700;
+      background: #181818;
+      border: 1px solid #ffd700;
+      border-radius: 9px;
+      padding: 7px 20px;
+      font-weight: 700;
+      transition: background .13s, color .13s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .back-btn:hover {
+      background: #ffd700;
+      color: #181818;
+      text-decoration: none;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- شريط تنقل أعلى الصفحة (يمكن نسخه من admin_dashboard.html) -->
+  <nav class="navbar navbar-dark mb-1" style="border-bottom:2px solid #ffd700;">
+    <div class="container-fluid justify-content-center py-2 flex-wrap">
+      <a class="navbar-brand mx-2 fw-bold" href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a class="nav-link mx-2" href="{{ url_for('manage_articles') }}">Articles</a>
+      <a class="nav-link mx-2 active" href="{{ url_for('analytics') }}">Analytics</a>
+      <a class="nav-link mx-2" href="{{ url_for('manage_ads') }}">Ads</a>
+      <a class="nav-link mx-2" href="{{ url_for('social_links') }}">Social Links</a>
+      <a class="nav-link mx-2 text-danger" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+  
+  <div class="container py-3">
+    <div class="title">Visitor Analytics</div>
+    <a href="{{ url_for('dashboard') }}" class="back-btn mb-3"><i class="bi bi-arrow-left-circle"></i> Back to Dashboard</a>
+
+    <div class="card-analytics">
+      <div class="stats-header">
+        <div class="stats-title">Visits Over Time</div>
+        <select class="stats-range-select" id="rangeSelect">
+          <option value="daily">Daily (Last 7 Days)</option>
+          <option value="weekly">Weekly (Last 12 Weeks)</option>
+          <option value="monthly">Monthly (Last 12 Months)</option>
+        </select>
+      </div>
+      <div class="summary-info">
+        <i class="bi bi-bar-chart"></i>
+        <span id="visits-summary">Total visits for this period: <b>...</b></span>
+      </div>
+      <canvas id="statsChart" height="110"></canvas>
+    </div>
+  </div>
+
+  <script>
+    function loadStats(range="daily") {
+      fetch('/admin/analytics/data?range=' + range)
+        .then(res => res.json())
+        .then(data => {
+          statsChart.data.labels = data.labels;
+          statsChart.data.datasets[0].data = data.data;
+          statsChart.update();
+          let total = data.data.reduce((a,b) => a+b, 0);
+          document.getElementById('visits-summary').innerHTML = `Total visits for this period: <b>${total}</b>`;
+        });
+    }
+    let statsChart;
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctx = document.getElementById('statsChart').getContext('2d');
+      statsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'Visits',
+            data: [],
+            backgroundColor: 'rgba(255,215,0,0.28)',
+            borderColor: '#ffd700',
+            borderWidth: 2.5,
+            borderRadius: 8,
+            maxBarThickness: 36,
+            minBarLength: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "#ffd700",
+              titleColor: "#111",
+              bodyColor: "#111"
+            }
+          },
+          scales: {
+            x: { grid: { color: "#ffd70028" }, ticks: { color: "#aaa" }},
+            y: { beginAtZero: true, grid: { color: "#ffd70018" }, ticks: { color: "#aaa" }}
+          }
+        }
+      });
+      loadStats("daily");
+      document.getElementById('rangeSelect').addEventListener('change', function() {
+        loadStats(this.value);
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

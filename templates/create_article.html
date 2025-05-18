@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Create New Article | TechSage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    html, body {
+      background: #111 !important;
+      color: #fff !important;
+    }
+    :root, [data-theme="dark"], [data-theme="light"] {
+      --main-bg: #111 !important;
+      --main-text: #fff !important;
+      --accent: #ffd700;
+      --card-bg: #181818 !important;
+    }
+    .navbar, .navbar * {
+      background: #181818 !important;
+      color: #ffd700 !important;
+      font-size: 1.08rem;
+      font-weight: 700;
+    }
+    .navbar .nav-link {
+      color: #ffd700 !important;
+      text-decoration: none;
+      padding: 6px 13px;
+      border-radius: 8px;
+      transition: background .14s, color .14s;
+    }
+    .navbar .nav-link.active, .navbar .nav-link:hover, .navbar-brand:hover {
+      background: #ffd700 !important;
+      color: #181818 !important;
+    }
+    .navbar-brand {
+      color: #ffd700 !important;
+      font-size: 1.2rem;
+      letter-spacing: .7px;
+    }
+    .form-container {
+      background: var(--card-bg);
+      border-radius: 17px;
+      box-shadow: 0 2px 14px #ffd70013;
+      border: 1.5px solid var(--accent);
+      padding: 36px 25px 25px 25px;
+      max-width: 540px;
+      margin: 40px auto;
+    }
+    .form-label {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.07rem;
+    }
+    .form-control, textarea.form-control {
+      background: #222;
+      color: #ffd700;
+      border: 1.5px solid #ffd700;
+      font-size: 1.07rem;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .form-control:focus, textarea.form-control:focus {
+      background: #181818;
+      color: #ffd700;
+      border-color: #ffd700;
+      box-shadow: 0 0 7px #ffd70055;
+    }
+    .btn-submit {
+      background: #ffd700;
+      color: #181818;
+      font-weight: 900;
+      border-radius: 8px;
+      font-size: 1.15rem;
+      padding: 11px 0;
+      width: 100%;
+      box-shadow: 0 1px 10px #ffd70027;
+      transition: background .13s, color .13s;
+      margin-top: 12px;
+    }
+    .btn-submit:hover {
+      background: #ffec80;
+      color: #111;
+    }
+    .back-btn {
+      margin: 0 0 16px 0;
+      font-size: 1.05rem;
+      color: #ffd700;
+      background: #181818;
+      border: 1px solid #ffd700;
+      border-radius: 9px;
+      padding: 7px 18px;
+      font-weight: 700;
+      transition: background .13s, color .13s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .back-btn:hover {
+      background: #ffd700;
+      color: #181818;
+      text-decoration: none;
+    }
+    @media (max-width: 600px) {
+      .form-container {padding: 14px 6px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- شريط تنقل -->
+  <nav class="navbar navbar-dark mb-1" style="border-bottom:2px solid #ffd700;">
+    <div class="container-fluid justify-content-center py-2 flex-wrap">
+      <a class="navbar-brand mx-2 fw-bold" href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a class="nav-link mx-2" href="{{ url_for('manage_articles') }}">Articles</a>
+      <a class="nav-link mx-2" href="{{ url_for('analytics') }}">Analytics</a>
+      <a class="nav-link mx-2" href="{{ url_for('manage_ads') }}">Ads</a>
+      <a class="nav-link mx-2" href="{{ url_for('social_links') }}">Social Links</a>
+      <a class="nav-link mx-2 text-danger" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <a href="{{ url_for('manage_articles') }}" class="back-btn mb-4">
+      <i class="bi bi-arrow-left-circle"></i> Back to Articles
+    </a>
+    <div class="form-container mt-2">
+      <h2 class="mb-4 fw-bold" style="color:#ffd700;">Create New Article</h2>
+      <!-- زر توليد مقال من ChatGPT -->
+      <button type="button" id="generate-btn" class="btn btn-dark mb-3" style="color:#ffd700; border:1.5px solid #ffd700; border-radius:8px; font-weight:700;">
+        <i class="bi bi-robot"></i> Generate Article with ChatGPT
+      </button>
+      <span id="generate-status" style="margin-left:15px;color:#ffd700;display:none;">Generating...</span>
+
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label" for="title">Title</label>
+          <input class="form-control" type="text" id="title" name="title" required maxlength="255" placeholder="Enter article title">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="content">Content</label>
+          <textarea class="form-control" id="content" name="content" rows="8" required placeholder="Write your article here..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-submit"><i class="bi bi-save"></i> Publish Article</button>
+      </form>
+    </div>
+  </div>
+  <script>
+  // سكريبت توليد مقال من ChatGPT
+  document.getElementById("generate-btn").onclick = function() {
+      let status = document.getElementById("generate-status");
+      status.style.display = "inline";
+      status.innerHTML = "Generating...";
+      fetch("/admin/generate_article_api", {
+          method: "POST",
+          headers: {"X-Requested-With": "XMLHttpRequest"}
+      })
+      .then(response => response.json())
+      .then(data => {
+          if(data.success) {
+              document.getElementById("title").value = data.title;
+              document.getElementById("content").value = data.content;
+              status.innerHTML = "Generated!";
+              setTimeout(()=>{status.style.display="none";}, 1500);
+          } else {
+              status.innerHTML = "Error!";
+              alert("Error: " + data.error);
+              setTimeout(()=>{status.style.display="none";}, 1800);
+          }
+      })
+      .catch(()=>{
+          status.innerHTML = "Error!";
+          setTimeout(()=>{status.style.display="none";}, 1800);
+      });
+  }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

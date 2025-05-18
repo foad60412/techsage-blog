@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Social Links | TechSage Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    html, body {
+      background: #111 !important;
+      color: #fff !important;
+    }
+    .navbar, .navbar * {
+      background: #181818 !important;
+      color: #ffd700 !important;
+      font-size: 1.08rem;
+      font-weight: 700;
+    }
+    .navbar .nav-link {
+      color: #ffd700 !important;
+      text-decoration: none;
+      padding: 6px 13px;
+      border-radius: 8px;
+      transition: background .14s, color .14s;
+    }
+    .navbar .nav-link.active, .navbar .nav-link:hover, .navbar-brand:hover {
+      background: #ffd700 !important;
+      color: #181818 !important;
+    }
+    .navbar-brand {
+      color: #ffd700 !important;
+      font-size: 1.2rem;
+      letter-spacing: .7px;
+    }
+    .social-container {
+      background: #181818;
+      border-radius: 16px;
+      border: 1.5px solid #ffd700;
+      box-shadow: 0 2px 16px #ffd70011;
+      padding: 30px 20px 24px 20px;
+      max-width: 540px;
+      margin: 40px auto 0 auto;
+    }
+    .social-title {
+      color: #ffd700;
+      font-weight: 800;
+      font-size: 1.38rem;
+      text-align: center;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 14px #ffd70044;
+    }
+    .form-label {
+      color: #ffd700;
+      font-weight: 700;
+      font-size: 1.06rem;
+      margin-bottom: 3px;
+    }
+    .form-control {
+      background: #222;
+      color: #ffd700;
+      border: 1.5px solid #ffd700;
+      font-size: 1.07rem;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .form-control:focus {
+      background: #181818;
+      color: #ffd700;
+      border-color: #ffd700;
+      box-shadow: 0 0 8px #ffd70066;
+    }
+    .form-switch .form-check-input:checked {
+      background-color: #ffd700 !important;
+      border-color: #ffd700 !important;
+      box-shadow: 0 0 6px #ffd70066;
+    }
+    .form-switch .form-check-input {
+      width: 2.5em;
+      height: 1.4em;
+      border-radius: 2em;
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    .btn-submit {
+      background: #ffd700;
+      color: #181818;
+      font-weight: 900;
+      border-radius: 7px;
+      font-size: 1.15rem;
+      width: 100%;
+      margin-top: 20px;
+      box-shadow: 0 1px 10px #ffd70027;
+      transition: background .13s, color .13s;
+      padding: 11px 0;
+    }
+    .btn-submit:hover {
+      background: #ffec80;
+      color: #111;
+    }
+    .back-btn {
+      margin: 0 0 16px 0;
+      font-size: 1.04rem;
+      color: #ffd700;
+      background: #181818;
+      border: 1px solid #ffd700;
+      border-radius: 9px;
+      padding: 7px 18px;
+      font-weight: 700;
+      transition: background .13s, color .13s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .back-btn:hover {
+      background: #ffd700;
+      color: #181818;
+      text-decoration: none;
+    }
+    @media (max-width: 600px) {
+      .social-container {padding: 13px 3px;}
+      .social-title {font-size: 1.02rem;}
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark mb-1" style="border-bottom:2px solid #ffd700;">
+    <div class="container-fluid justify-content-center py-2 flex-wrap">
+      <a class="navbar-brand mx-2 fw-bold" href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a class="nav-link mx-2" href="{{ url_for('manage_articles') }}">Articles</a>
+      <a class="nav-link mx-2" href="{{ url_for('analytics') }}">Analytics</a>
+      <a class="nav-link mx-2" href="{{ url_for('settings') }}">Settings</a>
+      <a class="nav-link mx-2 active" href="{{ url_for('social_links') }}">
+        <i class="bi bi-share-fill"></i> Social Links
+      </a>
+      <a class="nav-link mx-2" href="{{ url_for('manage_ads') }}">Ads</a>
+      <a class="nav-link mx-2 text-danger" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+  <div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-btn mb-3">
+      <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
+    </a>
+    <div class="social-container">
+      <div class="social-title">
+        <i class="bi bi-share-fill"></i> Manage Social Media Links
+      </div>
+      <form method="POST" autocomplete="off">
+        {% for platform in platforms %}
+        <div class="mb-2 d-flex align-items-center justify-content-between flex-wrap">
+          <div class="flex-grow-1 me-2">
+            <label class="form-label" for="{{ platform }}_url">
+              <i class="bi bi-{{ 'facebook' if platform=='Facebook' else
+                                  'twitter' if platform=='Twitter' else
+                                  'instagram' if platform=='Instagram' else
+                                  'youtube' if platform=='YouTube' else
+                                  'tiktok' if platform=='TikTok' else 'link' }}"></i>
+              {{ platform }} URL
+            </label>
+            <input class="form-control" type="text" id="{{ platform }}_url" name="{{ platform }}_url"
+                   value="{{ social_links[platform].url if social_links.get(platform) else '' }}"
+                   placeholder="https://{{ platform|lower }}.com/yourpage">
+          </div>
+          <div>
+            <label class="form-label d-block text-center" style="font-size:.97rem;">
+              Show
+              <input type="checkbox" class="form-check-input form-switch"
+                     name="{{ platform }}_visible"
+                     {% if social_links.get(platform) and social_links[platform].visible %}checked{% endif %}>
+            </label>
+          </div>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-submit mt-2">
+          <i class="bi bi-save"></i> Save Social Links
+        </button>
+      </form>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
