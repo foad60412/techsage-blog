@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>مولّد الصور بالذكاء الاصطناعي</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+      background: linear-gradient(120deg, #e0f7fa, #f8bbd0, #fffde7);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .container {
+      margin: 50px auto;
+      max-width: 600px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 12px 24px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 30px;
+      animation: fadein 1s;
+    }
+
+    img {
+      width: 100%;
+      max-width: 512px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .loader {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #f3f3f3;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 15px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background-color: #4CAF50;
+      animation: fillProgress 3s forwards;
+    }
+
+    @keyframes fillProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .download-btn {
+      margin-top: 15px;
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    .download-btn:hover {
+      background-color: #1976D2;
+    }
+  </style>
+  <script>
+    function showLoader() {
+      document.getElementById("loader").style.display = "block";
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>أدخل وصفاً وسيتم توليد صورة فنية لك</h1>
+    <form method="post" onsubmit="showLoader()">
+      <input type="text" name="prompt" placeholder="مثال: فتاة تمشي تحت المطر في الليل">
+      <br>
+      <button type="submit">توليد الصورة</button>
+    </form>
+
+    <div id="loader" class="loader">
+      <h3>جاري إنشاء الصورة...</h3>
+      <div class="progress-bar">
+        <div class="progress-bar-fill"></div>
+      </div>
+    </div>
+
+    {% if image %}
+      <div class="result">
+        <h2>الصورة الناتجة:</h2>
+        <img src="{{ image }}">
+        <br>
+        <a href="{{ image }}" download class="download-btn">تحميل الصورة</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
