@@ -26,280 +26,79 @@
     body {
       background: var(--main-bg);
       color: var(--main-text);
-      min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
     }
     .navbar {
       background: var(--accent);
-      border-bottom: 2px solid #222;
-      box-shadow: none;
     }
     .navbar-brand {
       color: #111 !important;
       font-weight: bold;
       font-size: 2rem;
-      letter-spacing: 1px;
     }
     .dark-toggle {
-      color: #111;
-      font-size: 1.4rem;
-      border: none;
       background: transparent;
+      border: none;
+      font-size: 1.3rem;
+      color: #111;
     }
-    [data-theme="dark"] .navbar,
-    [data-theme="dark"] .navbar-brand,
-    [data-theme="dark"] .dark-toggle {
+    [data-theme="dark"] .navbar {
       background: #111;
+    }
+    [data-theme="dark"] .navbar-brand {
       color: var(--accent) !important;
-      border-bottom: 2px solid var(--accent);
     }
-    /* إعلان */
-    .ad-card {
-      background: var(--card-bg);
-      color: var(--main-text);
-      border: 2px solid var(--accent);
-      border-radius: 18px;
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin: 20px 0;
-      box-shadow: 0 2px 14px #ffd7001a;
-      text-align: center;
-      padding: 28px 10px;
-    }
-    [data-theme="dark"] .ad-card {
-      background: #181818;
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-    /* Banner */
     .hero-banner {
       background: var(--banner-bg);
       color: var(--banner-text);
-      border-radius: 22px;
-      margin: 30px 0 24px 0;
-      padding: 20px 30px;
-      min-height: 240px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      font-weight: bold;
+      padding: 2rem;
       text-align: center;
-      box-shadow: 0 4px 22px #ffd70011;
+      border-radius: 20px;
+      font-size: 2rem;
+      margin-top: 20px;
     }
-    .carousel-inner {
-      border-radius: 22px;
-    }
-    .carousel-caption {
-      background: rgba(255,255,255,0.93);
-      color: #111;
-      border-radius: 1.3rem;
-      padding: 12px 12px;
-      left: 6% !important;
-      right: 6% !important;
-      bottom: 6% !important;
-      width: 88%;
-      box-shadow: 0 2px 10px #1113;
-    }
-    [data-theme="dark"] .carousel-caption {
-      background: rgba(17,17,17,0.92);
-      color: var(--accent);
-    }
-    .carousel-caption h5 {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #111;
-      margin: 0;
-    }
-    [data-theme="dark"] .carousel-caption h5 {
-      color: var(--accent);
-    }
-    .carousel-item img {
-      border-radius: 22px;
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-    }
-    @media (max-width: 800px) {
-      .carousel-item img { height: 180px !important; }
-      .hero-banner { font-size: 1.5rem; min-height: 120px; padding: 18px 8px;}
-    }
-    @media (max-width: 600px) {
-      .carousel-item img { height: 130px !important; }
-      .carousel-caption { padding: 5px 4px; left: 0 !important; right: 0 !important; width: 100%;}
-      .hero-banner { font-size: 1.12rem; min-height: 90px;}
-    }
-    @media (max-width: 400px) {
-      .carousel-item img { height: 92px !important; }
-      .hero-banner { font-size: 1rem; min-height: 60px;}
-    }
-    /* Popular bar */
-    .popular-bar-wrapper {
-      overflow: hidden;
-      background: var(--accent);
-      border-radius: 0 0 2rem 2rem;
-      position: relative;
-      z-index: 10;
-    }
-    .popular-bar {
-      display: flex;
-      gap: 20px;
-      animation: scroll-popular 22s linear infinite;
-      min-width: 220%;
-      align-items: center;
-      padding: 10px 0;
-    }
-    @keyframes scroll-popular {
-      0% {transform: translateX(0);}
-      100% {transform: translateX(-50%);}
-    }
-    .popular-bar a {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #fff;
-      color: #111;
-      padding: 7px 22px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 1.03rem;
-      text-decoration: none;
-      border: 1px solid var(--accent);
-      box-shadow: 0 2px 8px #ffd70022;
-      white-space: nowrap;
-      transition: background 0.18s, color 0.18s;
-    }
-    .popular-bar a:hover {
-      background: var(--accent);
-      color: #111;
-      text-decoration: none;
-    }
-    [data-theme="dark"] .popular-bar-wrapper { background: #181818; }
-    [data-theme="dark"] .popular-bar a {
-      background: #222;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-    }
-    /* قائمة المقالات */
     .card {
-      border: none;
-      border-radius: 18px;
       background: var(--card-bg);
-      box-shadow: 0 2px 8px #ffd70013;
-      transition: box-shadow 0.15s;
       color: var(--main-text);
-      margin-bottom: 22px;
-    }
-    [data-theme="dark"] .card {
-      background: #181818;
-      color: #fff;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px #00000015;
     }
     .card img {
-      border-radius: 12px;
-      height: 115px;
+      height: 160px;
       object-fit: cover;
-    }
-    .card .text-muted {
-      color: #222 !important;
-    }
-    [data-theme="dark"] .card .text-muted {
-      color: var(--accent) !important;
-      opacity: 0.8 !important;
+      border-radius: 12px;
     }
     .likes-badge {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #ca3c3c;
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-top: 6px;
       font-weight: 600;
-      text-shadow: 0 2px 8px #fff2;
+      margin-top: 6px;
     }
-    /* قلب أسود فقط */
-    .likes-badge .bi-heart-fill {
-      color: #ff0000 !important;
+    .carousel-item img {
+      height: 250px;
+      object-fit: cover;
+      border-radius: 22px;
     }
-    .btn-outline-primary {
-      border-color: var(--accent) !important;
-      color: #111 !important;
-      background: transparent !important;
-      font-weight: bold;
-    }
-    .btn-outline-primary.active,
-    .btn-outline-primary:active,
-    .btn-outline-primary:focus,
-    .btn-outline-primary:hover {
-      background: var(--accent) !important;
-      color: #111 !important;
-      border-color: var(--accent) !important;
-    }
-    [data-theme="dark"] .btn-outline-primary {
-      color: var(--accent) !important;
-      border-color: var(--accent) !important;
-      background: transparent !important;
-    }
-    [data-theme="dark"] .btn-outline-primary.active,
-    [data-theme="dark"] .btn-outline-primary:active,
-    [data-theme="dark"] .btn-outline-primary:focus,
-    [data-theme="dark"] .btn-outline-primary:hover {
-      background: var(--accent) !important;
-      color: #181818 !important;
-      border-color: var(--accent) !important;
-    }
-    .search-box input {
-      width: 100%;
-      border-radius: 8px;
-      padding: 6px 12px;
-      border: 1px solid var(--accent);
-      font-size: 1rem;
-      background: #fff;
+    .carousel-caption {
+      background: rgba(255, 255, 255, 0.9);
       color: #111;
+      border-radius: 1rem;
+      padding: 10px;
     }
-    [data-theme="dark"] .search-box input {
-      background: #181818;
+    [data-theme="dark"] .carousel-caption {
+      background: rgba(20, 20, 20, 0.9);
       color: var(--accent);
-      border: 1px solid var(--accent);
-    }
-    .filters-row {
-      margin: 20px 0 10px 0;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      justify-content: space-between;
-    }
-    .btn-group {
-      flex: 1 1 auto;
-      min-width: 210px;
-    }
-    .search-box {
-      flex: 1 1 160px;
-      max-width: 240px;
-    }
-    .section-title {
-      font-size: 1.18rem;
-      margin-top: 18px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: .5px;
-      text-shadow: 0 1px 4px #1111;
-    }
-    @media (max-width: 600px) {
-      .popular-bar { font-size: 0.93rem; gap: 8px; }
-      .card img { height: 62px; }
-      .section-title { font-size: 1.03rem; }
-      .card { padding: 0.52rem; }
-    }
-    @media (max-width: 450px) {
-      .filters-row { flex-direction: column; gap: 7px;}
-      .search-box { max-width: 100%; width: 100%; }
-      .hero-banner, .carousel-item img { min-height: 56px; height: 80px !important;}
     }
   </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg px-3">
+
+<nav class="navbar px-3">
   <div class="container-fluid justify-content-between">
     <a class="navbar-brand mx-auto" href="/">TechSage</a>
     <button onclick="toggleTheme()" class="dark-toggle">
@@ -308,29 +107,16 @@
   </div>
 </nav>
 
-<!-- الإعلانات في الأعلى -->
+<!-- إعلانات في الأعلى -->
 {% for ad in top_ads %}
-  <div class="ad-card">{{ ad.content|safe }}</div>
+  <div class="container mt-3">
+    <div class="alert alert-warning text-center">{{ ad.content|safe }}</div>
+  </div>
 {% endfor %}
 
-{% if popular_articles %}
-<div class="popular-bar-wrapper">
-  <div class="container-fluid px-0">
-    <div class="popular-bar">
-      {% for article in popular_articles %}
-        <a href="{{ url_for('read_article', article_id=article.id) }}"><i class="bi bi-fire"></i>{{ article.title[:55] }}</a>
-      {% endfor %}
-      {% for article in popular_articles %}
-        <a href="{{ url_for('read_article', article_id=article.id) }}"><i class="bi bi-fire"></i>{{ article.title[:55] }}</a>
-      {% endfor %}
-    </div>
-  </div>
-</div>
-{% endif %}
-
-<!-- بنر متحرك (كاروسيل أو ثابت) -->
-{% if articles|length > 2 %}
-<div id="heroCarousel" class="carousel slide container mt-3" data-bs-ride="carousel">
+<!-- كاروسيل للأوائل فقط إذا عددهم 3 أو أكثر -->
+{% if articles|length >= 3 %}
+<div id="heroCarousel" class="carousel slide container mt-4" data-bs-ride="carousel">
   <div class="carousel-inner">
     {% for i in range(3) %}
     {% set hero = articles[i] %}
@@ -339,7 +125,7 @@
         {% if hero.image_url %}
         <img src="{{ hero.image_url }}" class="d-block w-100" alt="slide">
         {% endif %}
-        <div class="carousel-caption d-block">
+        <div class="carousel-caption">
           <h5>{{ hero.title }}</h5>
         </div>
       </a>
@@ -355,22 +141,28 @@
 </div>
 {% endif %}
 
-<div class="container">
-  <div class="filters-row">
-    <div class="btn-group" role="group">
-      <a href="/?sort=latest" class="btn btn-outline-primary btn-sm {% if request.args.get('sort') == 'latest' or not request.args.get('sort') %}active{% endif %}">Latest</a>
-      <a href="/?sort=likes" class="btn btn-outline-primary btn-sm {% if request.args.get('sort') == 'likes' %}active{% endif %}">Most Liked</a>
-      <a href="/?sort=views" class="btn btn-outline-primary btn-sm {% if request.args.get('sort') == 'views' %}active{% endif %}">Most Viewed</a>
+<div class="container mt-4">
+  <div class="row justify-content-between align-items-center mb-3">
+    <div class="col-auto">
+      <div class="btn-group">
+        <a href="/?sort=latest" class="btn btn-outline-primary {% if request.args.get('sort') == 'latest' or not request.args.get('sort') %}active{% endif %}">Latest</a>
+        <a href="/?sort=likes" class="btn btn-outline-primary {% if request.args.get('sort') == 'likes' %}active{% endif %}">Most Liked</a>
+        <a href="/?sort=views" class="btn btn-outline-primary {% if request.args.get('sort') == 'views' %}active{% endif %}">Most Viewed</a>
+      </div>
     </div>
-    <form class="search-box" method="get" action="/">
-      <input type="text" name="q" placeholder="Search articles..." value="{{ request.args.get('q', '') }}">
-    </form>
+    <div class="col-auto">
+      <form class="d-flex" method="get" action="/">
+        <input type="text" name="q" class="form-control" placeholder="Search articles..." value="{{ request.args.get('q', '') }}">
+      </form>
+    </div>
   </div>
-  <h4 class="section-title">Articles</h4>
-  <div class="row mt-3">
-    {% for article in articles[3:] %}
+
+  <h4 class="section-title mb-3">Articles</h4>
+
+  <div class="row">
+    {% for article in articles %}
     <div class="col-12 col-md-6 col-lg-4 mb-4">
-      <div class="card p-2">
+      <div class="card p-3">
         {% if article.image_url %}
         <img src="{{ article.image_url }}" class="img-fluid mb-2">
         {% endif %}
@@ -384,9 +176,10 @@
     </div>
     {% endfor %}
   </div>
+
   <!-- إعلانات في الأسفل -->
   {% for ad in bottom_ads %}
-    <div class="ad-card">{{ ad.content|safe }}</div>
+    <div class="alert alert-warning text-center mt-4">{{ ad.content|safe }}</div>
   {% endfor %}
 </div>
 
