@@ -14,6 +14,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database', 'blog.db')
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
