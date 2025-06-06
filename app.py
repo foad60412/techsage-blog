@@ -1,3 +1,4 @@
+from flask_login import UserMixin  # ضعه في أعلى الملف إذا لم يكن موجودًا
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
@@ -11,16 +12,20 @@ import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database', 'blog.db')
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 # ======= Models =======
-class AdminUser(UserMixin, db.Model):
+
+class AdminUser(db.Model, UserMixin):  # <-- أضف UserMixin هنا
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -376,9 +381,6 @@ def generate_article_api():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
     
-@app.route('/sw.js')
-def service_worker():
-    return app.send_static_file('sw.js')
 
 if __name__ == '__main__':
     os.makedirs('database', exist_ok=True)
